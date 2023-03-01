@@ -1,0 +1,1 @@
+<span class="mr-3">Balance: <strong>{{ $balance }}</strong></span>
