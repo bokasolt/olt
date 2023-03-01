@@ -2,6 +2,8 @@
 
 namespace App\Domains\Auth\Notifications\Frontend;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
@@ -11,8 +13,10 @@ use Illuminate\Support\Facades\URL;
 /**
  * Class VerifyEmail.
  */
-class VerifyEmail extends Notification
+class VerifyEmail extends Notification implements ShouldQueue
 {
+    use Queueable;
+
     /**
      * Get the notification's channels.
      *

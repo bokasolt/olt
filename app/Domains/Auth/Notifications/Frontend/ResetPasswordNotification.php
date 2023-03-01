@@ -2,14 +2,18 @@
 
 namespace App\Domains\Auth\Notifications\Frontend;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 /**
  * Class ResetPasswordNotification.
  */
-class ResetPasswordNotification extends Notification
+class ResetPasswordNotification extends Notification implements ShouldQueue
 {
+    use Queueable;
+
     /**
      * The password reset token.
      *
