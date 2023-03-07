@@ -51,14 +51,9 @@ trait UserMethod
         return $this->type === $type;
     }
 
-    /**
-     * @param $type
-     *
-     * @return bool
-     */
     public function isPaid(): bool
     {
-        return $this->paid;
+        return $this->paid ?? false;
     }
 
     public function getBalance(): int
