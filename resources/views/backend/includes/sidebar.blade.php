@@ -32,6 +32,16 @@
             </li>
         @endif
 
+        @if ($logged_in_user->can('admin.access.google-sheet.view'))
+            <li class="c-sidebar-nav-item">
+                <x-utils.link
+                        :href="route('admin.google-sheet.index')"
+                        class="c-sidebar-nav-link"
+                        :text="__('Google sheets')"
+                        :active="activeClass(Route::is('admin.google-sheet.*'), 'c-active')" />
+            </li>
+        @endif
+
         @if (
             $logged_in_user->hasAllAccess() ||
             (
