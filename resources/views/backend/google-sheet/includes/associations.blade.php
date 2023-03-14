@@ -12,25 +12,14 @@
                 <td>@lang('Column in database')</td>
                 <td>@lang('Column in Google Sheet')</td>
             </tr>
+            @foreach($fillable as $fill)
             <tr>
-                <td>Domain</td>
+                <td>{{ $fill }}</td>
                 <td class="columnGoogleSheet">
-                    <select name="associations[domain]"><option>-- not use --</option></select>
+                    <select name="associations[{{$fill}}]"><option>-- not use --</option></select>
                 </td>
             </tr>
-            <tr>
-                <td>NICHE</td>
-                <td class="columnGoogleSheet">
-                    <select name="associations[niche]"><option>-- not use --</option></select>
-                </td>
-            </tr>
-            <tr>
-                <td>LANGUAGE</td>
-                <td class="columnGoogleSheet">
-                    <select name="associations[language]"><option>-- not use --</option></select>
-                </td>
-            </tr>
-
+            @endforeach
         </table>
     </div>
 
@@ -43,11 +32,13 @@
 <script>
     $(document).ready(function(){
 
-        const url = $('#url').val()
         const _token = $('meta[name="csrf-token"]').attr('content')
 
         $(document).delegate('#btnLoadGoogleSheet', 'click', function(e) {
             e.preventDefault()
+
+            const url = $('#url').val()
+
             $.ajax({
                 url: '{{ route('admin.google-sheet.load') }}',
                 type: 'post',
@@ -86,9 +77,8 @@
         function setDefault()
         {
             let associations = [];
-            @if($googleSheet->associations)
+            @if(isset($googleSheet) && $googleSheet->associations)
                 associations = @json($googleSheet->associations);
-
             @endif
 
             for (let i in associations) {
@@ -100,8 +90,9 @@
             }
         }
 
-        $('#btnLoadGoogleSheet').click()
-
+        if ($('#url').val()) {
+            $('#btnLoadGoogleSheet').click()
+        }
 
         $(document).delegate('#saveAndImport', 'click', function(e) {
             e.preventDefault()

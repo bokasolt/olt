@@ -24,12 +24,13 @@ class GoogleSheetController
     public function edit(GoogleSheet $googleSheet)
     {
         return view('backend.google-sheet.edit')
-            ->withGoogleSheet($googleSheet->load('associations'));
+            ->withGoogleSheet($googleSheet->load('associations'))
+            ->withFillable((new Domain())->getFillable());
     }
 
     public function update(GoogleSheetRequest $request, GoogleSheet $googleSheet, GoogleSheetEntityService $service)
     {
-        $service->save($request, $googleSheet);
+        $service->update($request, $googleSheet);
 
         if ($request->import){
             return redirect()->route('admin.google-sheet.import', $googleSheet)
@@ -41,12 +42,18 @@ class GoogleSheetController
 
     public function create()
     {
-        return view('backend.google-sheet.create');
+        return view('backend.google-sheet.create')
+            ->withFillable((new Domain())->getFillable());
     }
 
-    public function store(GoogleSheetRequest $request)
+    public function store(GoogleSheetRequest $request, GoogleSheetEntityService $service)
     {
-        GoogleSheet::create($request->validated());
+        $googleSheet = $service->store($request);
+
+        if ($request->import){
+            return redirect()->route('admin.google-sheet.import', $googleSheet)
+                ->withFlashSuccess(__('The google sheet was successfully updated.'));
+        }
 
         return redirect()->route('admin.google-sheet.index')
             ->withFlashSuccess(__('The google sheet was successfully created.'));

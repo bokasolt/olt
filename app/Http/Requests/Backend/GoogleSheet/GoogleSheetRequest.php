@@ -30,19 +30,8 @@ class GoogleSheetRequest extends FormRequest
             'name' => ['required', 'string'],
             'url' => ['required', 'string'],
             'associations' => ['required', 'array'],
+            'associations.domain' => ['required', 'string', 'not_in:-- not use --'],
             'import' => ['sometimes']
         ];
-    }
-
-    /**
-     * Handle a failed authorization attempt.
-     *
-     * @return void
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    protected function failedAuthorization()
-    {
-        throw new AuthorizationException(__('You can not edit the Administrator role.'));
     }
 }

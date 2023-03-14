@@ -7,10 +7,12 @@ use App\Exceptions\GoogleSheet\AccessException;
 use App\Exceptions\GoogleSheet\ValidationException;
 use App\Models\Domain;
 use App\Models\GoogleSheet;
+use Carbon\Carbon;
 use DB;
 use Google_Client;
 use Google_Service_Sheets;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Mixed_;
 use Symfony\Component\HttpFoundation\Response;
 
 class GoogleSheetService
@@ -18,6 +20,7 @@ class GoogleSheetService
     private $sheets;
     private $spreadsheetId;
     private Google_Service_Sheets $service;
+    private $types;
 
     /**
      * @throws ValidationException
@@ -81,7 +84,13 @@ class GoogleSheetService
 
     public function import(GoogleSheet $googleSheet, Request $request)
     {
-        $entities = $this->getEntities($googleSheet, $request);
+        if (!$request->rows) {
+            return response()->json([
+                'message' => 'Select the domains you want to import'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $entities = $this->removeDuplicate($this->getEntities($googleSheet, $request));
         $existing = $this->checkExisting($entities, $request);
 
         if ($existing->count()) {
@@ -93,7 +102,6 @@ class GoogleSheetService
         DB::beginTransaction();
 
         try {
-
             foreach ($entities as $entity) {
                 if (isset($request->overwrite)
                     && isset($request->overwrite[$entity['domain']])) {
@@ -118,7 +126,7 @@ class GoogleSheetService
             DB::rollback();
 
             return response()->json([
-                'message' => 'Transaction error'
+                'message' => $e
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -131,7 +139,8 @@ class GoogleSheetService
         foreach ($request->rows as $row) {
             foreach ($googleSheet->associations as $association) {
                 if (isset($googleSheetData[$row][$association['gs_column']])) {
-                    $entities[$row][$association['db_column']] = $googleSheetData[$row][$association['gs_column']];
+                    $entities[$row][$association['db_column']] =
+                        $this->fieldTypeConversion($googleSheetData[$row][$association['gs_column']], $association['db_column']);
                 } else {
                     $this->log[] = 'Column ' . $association['gs_column'] . ' not found in Google Sheet';
                 }
@@ -143,13 +152,56 @@ class GoogleSheetService
 
     private function checkExisting($entities, $request)
     {
-        $domains = Domain::whereIn('domain', collect($entities)->pluck('domain'))
-            ->select('domain');
+        $domains = Domain::whereIn(DB::raw('lower(domain)'), collect($entities)->pluck('domain'))
+            ->where('domain', '!=', '')
+            ->select(DB::raw('lower(domain) as domain'));
 
         if (isset($request->overwrite)) {
-            $domains->whereNotIn('domain', array_keys($request->overwrite));
+            $domains->whereNotIn(DB::raw('lower(domain)'), array_keys($request->overwrite));
         }
 
         return $domains->get() ?? false;
+    }
+
+    private function removeDuplicate($entities): array
+    {
+        $entities = collect($entities)->unique('domain');
+
+        $entities = $entities->filter(function($item) {
+            return $item['domain'] !== '';
+        });
+
+        return $entities->toArray();
+    }
+
+    private function fieldTypeConversion($field, $column)
+    {
+        if (!$this->types) {
+            $this->types = collect(DB::select('describe domains'));
+        }
+
+        $typeColumn = $this->types->where('Field', $column)->first()->Type;
+
+        if (str_contains($typeColumn, 'varchar') || str_contains($typeColumn, 'text')) {
+            if ($column === 'domain') {
+                $field = strtolower($field);
+            }
+            $field = strval($field);
+        } else if (str_contains($typeColumn, 'int')) {
+            $field = intval($field);
+        } else if (str_contains($typeColumn, 'timestamp')) {
+            $field = Carbon::parse($field);
+        } else if (str_contains($typeColumn, 'decimal')) {
+            if ($column === 'price') {
+                $field = preg_replace('/[^0-9.]/', '', $field);
+            }
+            $field = number_format(floatval($field), 2, '.', '');
+
+            if (strlen($field) > 8) {
+                $field = 0;
+            }
+        }
+
+        return $field;
     }
 }

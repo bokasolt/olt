@@ -36,7 +36,7 @@
             </x-slot>
 
             <x-slot name="footer">
-                <button class="btn btn-sm btn-primary float-right" type="submit">@lang('Save')</button>
+                @include('backend.google-sheet.includes.associations')
             </x-slot>
         </x-backend.card>
     </x-forms.post>

@@ -19,14 +19,14 @@
                 <table>
                         @if($googleSheet->associations && $googleSheetData)
                             <tr>
-                                <td></td>
+                                <td><input type="checkbox" id="checkAll"></td>
                                 @foreach($googleSheet->associations as $association)
                                     <td>{{ $association['db_column'] }}</td>
                                 @endforeach
                             </tr>
 
                             @foreach($googleSheetData->values as $numberRow => $row)
-                                @if($numberRow)
+                                @if($numberRow && !empty($row))
                                     <tr>
                                         <td><input type="checkbox" value="{{ $numberRow }}" name="rows[]"></td>
                                         @foreach($googleSheet->associations as $association)
@@ -70,6 +70,14 @@
 
     <script>
         $(document).ready(function(){
+            $(document).delegate('#checkAll', 'click', function(e) {
+                if ($('#checkAll:checked').length) {
+                    $('input[type="checkbox"]').attr('checked', 'checked')
+                } else {
+                    $('input[type="checkbox"]').removeAttr('checked')
+                }
+            });
+
             $(document).delegate('.import', 'click', function(e) {
 
                 e.preventDefault()
@@ -87,17 +95,17 @@
                         $('#tableGoogleSheet').css('opacity', 1);
                     },
                     success: function(json) {
-                        console.log(json)
                         if (json['existing']) {
 
                             let entity = '';
 
                             json['existing'].forEach( item => {
-                                console.log(item)
-                                entity += '<div class="existingItem">' +
-                                    item.domain + ' <div><label> overwrite <input type="radio" name="overwrite['+item.domain+']" value="1" checked></label>'
-                                    + ' <label> skip <input type="radio" name="overwrite['+item.domain+']" value="0"></label></div>'
-                                    + '</div>'
+                                if (item.domain) {
+                                    entity += '<div class="existingItem">' +
+                                        item.domain + ' <div><label> overwrite <input type="radio" name="overwrite[' + item.domain + ']" value="1" checked></label>'
+                                        + ' <label> skip <input type="radio" name="overwrite[' + item.domain + ']" value="0"></label></div>'
+                                        + '</div>'
+                                }
                             })
 
                             $('#existingModal .modal-body').html(entity)
