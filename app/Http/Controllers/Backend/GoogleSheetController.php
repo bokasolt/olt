@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Requests\Backend\GoogleSheet\GoogleSheetRequest;
+use App\Http\Requests\Backend\GoogleSheet\ImportRequest;
 use App\Models\Domain;
 use App\Models\GoogleSheet;
 use App\Services\GoogleSheetEntityService;
@@ -82,7 +83,7 @@ class GoogleSheetController
         ]);
     }
 
-    public function import(GoogleSheet $googleSheet, Request $request, GoogleSheetService $googleSheetService)
+    public function import(GoogleSheet $googleSheet, ImportRequest $request, GoogleSheetService $googleSheetService)
     {
         return $googleSheetService->import($googleSheet, $request);
     }

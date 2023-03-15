@@ -12,7 +12,6 @@ use DB;
 use Google_Client;
 use Google_Service_Sheets;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Mixed_;
 use Symfony\Component\HttpFoundation\Response;
 
 class GoogleSheetService
@@ -84,12 +83,6 @@ class GoogleSheetService
 
     public function import(GoogleSheet $googleSheet, Request $request)
     {
-        if (!$request->rows) {
-            return response()->json([
-                'message' => 'Select the domains you want to import'
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
         $entities = $this->removeDuplicate($this->getEntities($googleSheet, $request));
         $existing = $this->checkExisting($entities, $request);
 

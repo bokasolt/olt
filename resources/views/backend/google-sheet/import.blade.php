@@ -119,7 +119,11 @@
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         if (xhr && xhr.responseJSON && xhr.responseJSON.message) {
-                            alert(thrownError + '\n\r' + xhr.responseJSON.message);
+                            if (xhr.responseJSON.errors && xhr.responseJSON.errors.rows) {
+                                alert(thrownError + '\n\r' + xhr.responseJSON.errors.rows[0]);
+                            } else {
+                                alert(thrownError + '\n\r' + xhr.responseJSON.message);
+                            }
                         } else {
                             alert(xhr.responseText);
                         }
