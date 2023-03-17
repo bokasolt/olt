@@ -29,9 +29,9 @@ trait DomainColumnsTable
     public function commonColumns($actions = false): array
     {
         return [
-            Column::make(__('NICHE'), 'niche')
-                ->sortable(),
-            Column::make(__('LANGUAGE'), 'lang')
+//            Column::make(__('NICHE'), 'niche')
+//                ->sortable(),
+            Column::make(__('LAN'), 'lang')
                 ->sortable(),
             Column::make(__('Title of home page'), 'title')
                 ->sortable(),
@@ -45,14 +45,14 @@ trait DomainColumnsTable
                 ->sortable(),
             Column::make(__('Keywords TOP 10'), 'num_organic_keywords_top_10')
                 ->sortable(),
-            Column::make(__('Article provides by'), 'article_by')
-                ->sortable(),
+//            Column::make(__('Article provides by'), 'article_by')
+//                ->sortable(),
             Column::make(__('Price (USD)'), 'price')
                 ->sortable(),
             Column::make(__('Sponsored label'), 'sponsored_label')
                 ->sortable(),
-            Column::make(__('Type of publication'), 'type_of_publication')
-                ->sortable(),
+//            Column::make(__('Type of publication'), 'type_of_publication')
+//                ->sortable(),
             Column::make(__('Link type'), 'type_of_link')
                 ->sortable(),
             Column::make(__('Contact email'), 'contact_email')

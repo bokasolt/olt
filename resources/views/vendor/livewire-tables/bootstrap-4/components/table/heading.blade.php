@@ -22,6 +22,7 @@
             <div class="d-flex align-items-center position-relative">
                 <span wire:click="sortBy('{{ $column }}', '{{ $text ?? $column }}')">{{ $text }}</span>
 
+                <div>
                 <span wire:click="sortBy('{{ $column }}', '{{ $text ?? $column }}')"
                       class="relative d-flex align-items-center">
                 @if ($direction === 'asc')
@@ -48,6 +49,7 @@
                         @include($filter->view())
                     </div>
                 @endif
+                </div>
             </div>
         </th>
     @endif

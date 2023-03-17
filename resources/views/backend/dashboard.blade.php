@@ -38,4 +38,72 @@
             <livewire:backend.domains-table />
         </x-slot>
     </x-backend.card>
+
+    <script>
+
+        $('.column-title:not(.clicked)').click(function () {
+            if (!$(this).hasClass('clicked')) {
+                $('.column-title').removeClass("clicked");
+                $('.moreInfo').remove();
+                $(this).toggleClass("clicked");
+                const text = $(this).text();
+                $(this).append('<div class="moreInfo">' + text + ' <span class="closeMoreInfo">X</span></div>')
+            }
+        })
+
+        $( "html" ).delegate( ".closeMoreInfo", "click", () => {
+            $('.column-title').removeClass("clicked");
+            $('.moreInfo').remove();
+        });
+
+        $('.column-price').dblclick(function () {
+            if (!$(this).hasClass('editorField')) {
+                $(this).toggleClass("editorField");
+                const text = parseFloat($(this).text());
+                $(this).append('<div class="editor"><input type="text" name="price" value="'+text+'"> <button onclick="save($(this))">save</button><button onclick="closeEditor($(this))">close</button></div>')
+            }
+        })
+
+        function closeEditor(element) {
+            element.parent().parent().removeClass('editorField')
+            element.parent().remove()
+        }
+        function save(element) {
+            const domain = element.parent().parent().parent().find('.column-domain h5 a').text()
+            const value = element.siblings('input').val()
+            console.log(element.siblings('input'))
+
+            const _token = $('meta[name="csrf-token"]').attr('content')
+
+            $.ajax({
+                url: '{{ route('admin.domain.quickEdit') }}',
+                type: 'patch',
+                data: {
+                    domain: domain,
+                    value: value,
+                    _token: _token
+                },
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#tableGoogleSheet').css('opacity', 0.5);
+                },
+                complete: function () {
+                    $('#tableGoogleSheet').css('opacity', 1);
+                },
+                success: function (json) {
+                    if (json['price']) {
+                        element.parent().parent().find('span').text(json['price'])
+                        closeEditor(element)
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr && xhr.responseJSON && xhr.responseJSON.message) {
+                        alert(thrownError + '\n\r' + xhr.responseJSON.message);
+                    } else {
+                        alert(xhr.responseText);
+                    }
+                }
+            })
+        }
+    </script>
 @endsection

@@ -35,17 +35,96 @@
 
 .stick-2col th:nth-child(2), .stick-2col td:nth-child(2){
 	position: sticky;
-	left: 30px;
+	left: 19px;
 	z-index: 10;
 	background: #fff;
+}
+
+.stick-2col th:nth-child(2)::before , .stick-2col td:nth-child(2)::before {
+	content: '';
+	border-right: 1px solid #d8dbe0;
+	position: absolute;
+	right: 0;
+	height: 100%;
+	top: 0;
+}
+
+td.column-title span {
+	margin: 0;
+	-webkit-line-clamp: 1;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	height: 15px;
+	max-width: 120px;
+}
+
+.table thead th {
+	vertical-align: inherit!important;
+}
+
+td.column-contact_form_link {
+	max-width: 112px;
+}
+
+h5.mb-1.font-weight-bold {
+	font-size: 12px;
+}
+
+.table th, .table td {
+	font-size: 11px;
+}
+
+.table th, .table th button.btn {
+	padding: 1px;
 }
 
 .table-striped.stick-2col tbody tr:nth-of-type(odd) td:nth-child(2){
 	background: #f2f2f2;
 }
 
+.table th, .table td {
+	padding: 5px 3px!important;
+}
+
 .dropdown-menu .card {
     margin-bottom: 0;
     max-height: 400px;
     overflow: auto;
+}
+
+.column-title {
+	position: relative;
+}
+
+.moreInfo {
+	position: absolute;
+	top: 0;
+	z-index: 999;
+	width: 200px;
+	background: white;
+	padding: 10px;
+}
+
+span.closeMoreInfo {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	padding: 3px;
+	cursor: pointer;
+}
+
+.editorField {
+	position: relative;
+}
+
+.editorField .editor{
+	display: flex;
+}
+.editorField .editor input{
+	display: flex;
+	width: 60px;
+}
+.editorField > span {
+	display: none;
 }

@@ -8,6 +8,8 @@ Route::group([
     'prefix' => 'domain',
     'as' => 'domain.',
 ], function () {
+    Route::patch('/quick-edit', [DomainController::class, 'quickEdit'])->name('quickEdit');
+
     Route::group([
         'prefix' => '{domain}',
     ], function () {

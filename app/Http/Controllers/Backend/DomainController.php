@@ -6,6 +6,8 @@ use App\Http\Requests\Backend\Domain\DomainRequest;
 use App\Http\Requests\Backend\Domain\DomainUpdateRequest;
 use App\Models\Domain;
 use App\Services\ConfigListService;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DomainController
 {
@@ -72,5 +74,19 @@ class DomainController
         $vals['domain'] = rtrim($vals['domain']);
 
         return $vals;
+    }
+
+    public function quickEdit(Request $request)
+    {
+        $domain = Domain::where('domain', $request->domain)->first();
+
+        if (!$domain) {
+            throw new \Exception('Domain not fount', Response::HTTP_NOT_FOUND);
+        }
+
+        $domain->price = $request->value;
+        $domain->save();
+
+        return $domain;
     }
 }

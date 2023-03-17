@@ -8,11 +8,12 @@
     <meta name="description" content="@yield('meta_description', appName())">
     <meta name="author" content="@yield('meta_author', 'Artem Myrhorodsky')">
     @yield('meta')
-
     @stack('before-styles')
     <link href="{{ mix('css/backend.css') }}" rel="stylesheet">
     <livewire:styles />
     @stack('after-styles')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body class="c-app">
     @include('backend.includes.sidebar')
