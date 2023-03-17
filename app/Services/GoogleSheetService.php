@@ -83,12 +83,22 @@ class GoogleSheetService
 
     public function import(GoogleSheet $googleSheet, Request $request)
     {
+        $result = [
+            'imported' => 0,
+            'skipped' => 0,
+            'overwritten' => 0,
+        ];
         $entities = $this->removeDuplicate($this->getEntities($googleSheet, $request));
         $existing = $this->checkExisting($entities, $request);
 
         if ($existing->count()) {
             return response()->json([
-                'existing' => $existing
+                'existing' => $existing,
+                'result' => [
+                    'loaded' => count($entities),
+                    'exist' => count($existing),
+                    'new' => count($entities) - count($existing),
+                ],
             ]);
         }
 
@@ -102,9 +112,13 @@ class GoogleSheetService
                         Domain::updateOrCreate([
                             'domain' => $entity['domain']
                         ], $entity);
+                        ++$result['overwritten'];
+                    } else {
+                        ++$result['skipped'];
                     }
                 } else {
                     Domain::create($entity);
+                    ++$result['imported'];
                 }
             }
 
@@ -112,7 +126,8 @@ class GoogleSheetService
 
             return response()->json([
                 'redirect' => route('admin.google-sheet.index'),
-                'message' => 'The google sheet was successfully imported.'
+                'message' => 'The google sheet was successfully imported.',
+                'result' => $result
             ]);
 
         } catch (\Exception $e) {
