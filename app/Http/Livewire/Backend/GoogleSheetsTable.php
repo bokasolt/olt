@@ -28,6 +28,7 @@ class GoogleSheetsTable extends DataTableComponent
             Column::make(__('Name'))
                 ->sortable(),
             Column::make(__('Url')),
+            Column::make(__('Updated')),
             Column::make(__('Actions')),
         ];
     }
