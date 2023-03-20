@@ -140,3 +140,6 @@ span.closeMoreInfo {
 td.column-ahrefs_sync_at {
 	min-width: 140px;
 }
+.editorField button {
+	margin: 0 5px!important;
+}

@@ -61,7 +61,9 @@
             if (!$(this).hasClass('editorField')) {
                 $(this).toggleClass("editorField");
                 const text = parseFloat($(this).text());
-                $(this).append('<div class="editor"><input type="text" name="price" value="'+text+'"> <button onclick="save($(this))">save</button><button onclick="closeEditor($(this))">close</button></div>')
+                $(this).append('<div class="editor"><input type="text" name="price" style="border:1px solid #d8dbe0" value="'+text+'"> ' +
+                    '<button onclick="save($(this))" class="btn btn-sm btn-primary">save</button>' +
+                    '<button onclick="closeEditor($(this))" class="card-header-action" style="border: none;">close</button></div>')
             }
         })
 
@@ -71,6 +73,10 @@
                 $('.moreInfo').remove();
             }
         });
+        document.addEventListener('scroll', function (event) {
+            $('.column-title').removeClass("clicked");
+            $('.moreInfo').remove();
+        }, true /*Capture event*/);
 
         function closeEditor(element) {
             element.parent().parent().removeClass('editorField')

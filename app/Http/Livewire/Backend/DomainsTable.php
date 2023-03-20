@@ -174,7 +174,7 @@ class DomainsTable extends DataTableComponent
             [
                 Column::make(__('Sync at'), 'ahrefs_sync_at', 'Sync')
                     ->sortable(),
-                Column::make(__('Actions'), 'domain', 'Action')
+                Column::make(__('Action'), 'domain', 'Action')
                     ->format(function (Domain $row) {
                         return view('backend.domain.includes.actions', ['domain' => $row]);
                     })
