@@ -36,6 +36,22 @@ class Domain extends Model
         'additional_notes',
     ];
 
+    public function getSponsoredLabelAttribute($val)
+    {
+        if (!$val) {
+            return 'NO';
+        }
+        return strtoupper($val);
+    }
+
+    public function getLangAttribute($val)
+    {
+        if (strpos($val, 'RU') !== false || strpos($val, 'UA') !== false) {
+            return 'UA-RU';
+        }
+        return $val;
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class);

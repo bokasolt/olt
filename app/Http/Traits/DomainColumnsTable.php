@@ -31,7 +31,7 @@ trait DomainColumnsTable
         return [
 //            Column::make(__('NICHE'), 'niche')
 //                ->sortable(),
-            Column::make(__('LAN'), 'lang')
+            Column::make(__('Language'), 'lang', 'LAN')
                 ->sortable(),
             Column::make(__('Title of home page'), 'title', 'Title')
                 ->sortable(),
@@ -57,8 +57,8 @@ trait DomainColumnsTable
                 ->sortable(),
             Column::make(__('Contact email'), 'contact_email', 'Email')
                 ->sortable(),
-            Column::make(__('Contact form'), 'contact_form_link', 'CF')
-                ->sortable(),
+//            Column::make(__('Contact form'), 'contact_form_link', 'CF')
+//                ->sortable(),
             Column::make(__('Contact name'), 'contact_name', 'Name')
                 ->sortable(),
             Column::make(__('Additional notes'), 'additional_notes', 'Notes')

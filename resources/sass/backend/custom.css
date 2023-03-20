@@ -143,3 +143,9 @@ td.column-ahrefs_sync_at {
 .editorField button {
 	margin: 0 5px!important;
 }
+i.fas.fa-filter {
+	height: 13px;
+}
+td.column-lang {
+	text-align: center;
+}
