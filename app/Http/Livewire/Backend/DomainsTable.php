@@ -172,9 +172,9 @@ class DomainsTable extends DataTableComponent
             $failed_columns,
             $this->commonColumns(true),
             [
-                Column::make(__('Sync at'), 'ahrefs_sync_at')
+                Column::make(__('Sync at'), 'ahrefs_sync_at', 'Sync')
                     ->sortable(),
-                Column::make(__('Actions'), 'domain')
+                Column::make(__('Actions'), 'domain', 'Action')
                     ->format(function (Domain $row) {
                         return view('backend.domain.includes.actions', ['domain' => $row]);
                     })

@@ -3,6 +3,7 @@
 'sortable' => null,
 'direction' => null,
 'text' => null,
+'short' => null,
 'filter' => null,
 'hideFilterLabel' => true,
 'showFilters' => false
@@ -18,11 +19,11 @@
         <th
                 {{ $attributes->only('class') }}
                 style="cursor: pointer;"
+                data-toggle="tooltip" data-placement="top" title="{{ $text ?? $column }}"
         >
             <div class="d-flex align-items-center position-relative">
-                <span wire:click="sortBy('{{ $column }}', '{{ $text ?? $column }}')">{{ $text }}</span>
+                <span wire:click="sortBy('{{ $column }}', '{{ $text ?? $column }}')">{{ $short ?? $text }}</span>
 
-                <div>
                 <span wire:click="sortBy('{{ $column }}', '{{ $text ?? $column }}')"
                       class="relative d-flex align-items-center">
                 @if ($direction === 'asc')
@@ -49,7 +50,6 @@
                         @include($filter->view())
                     </div>
                 @endif
-                </div>
             </div>
         </th>
     @endif

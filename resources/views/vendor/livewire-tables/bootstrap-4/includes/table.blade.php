@@ -16,6 +16,7 @@
                     <x-livewire-tables::bs4.table.heading
                         :sortable="$column->isSortable()"
                         :column="$column->column()"
+                        :short="$column->short"
                         :direction="$column->column() ? $sorts[$column->column()] ?? null : null"
                         :text="$column->text() ?? ''"
                         :filter="$customFilters[$column->column] ?? null"

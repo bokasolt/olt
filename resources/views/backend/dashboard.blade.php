@@ -41,7 +41,7 @@
 
     <script>
 
-        $('.column-title:not(.clicked)').click(function () {
+        $('.column-title:not(.clicked), .column-additional_notes:not(.clicked)').click(function () {
             if (!$(this).hasClass('clicked')) {
                 $('.column-title').removeClass("clicked");
                 $('.moreInfo').remove();
@@ -63,6 +63,13 @@
                 $(this).append('<div class="editor"><input type="text" name="price" value="'+text+'"> <button onclick="save($(this))">save</button><button onclick="closeEditor($(this))">close</button></div>')
             }
         })
+
+        $( "html" ).delegate( "body", "mouseup", (e) => {
+            if ($(".moreInfo") && e.target !== $(".moreInfo")[0]){
+                $('.column-title').removeClass("clicked");
+                $('.moreInfo').remove();
+            }
+        });
 
         function closeEditor(element) {
             element.parent().parent().removeClass('editorField')

@@ -33,35 +33,35 @@ trait DomainColumnsTable
 //                ->sortable(),
             Column::make(__('LAN'), 'lang')
                 ->sortable(),
-            Column::make(__('Title of home page'), 'title')
+            Column::make(__('Title of home page'), 'title', 'Title')
                 ->sortable(),
-            Column::make(__('Ahrefs DR'), 'ahrefs_dr')
+            Column::make(__('Ahrefs DR'), 'ahrefs_dr', 'DR')
                 ->sortable(),
-            Column::make(__('Ahrefs Traffic'), 'ahrefs_traffic')
+            Column::make(__('Ahrefs Traffic'), 'ahrefs_traffic', 'Traffic')
                 ->sortable(),
-            Column::make(__('Linked domains'), 'linked_domains')
+            Column::make(__('Linked domains'), 'linked_domains', 'LD')
                 ->sortable(),
-            Column::make(__('Ref. domains'), 'ref_domains')
+            Column::make(__('Ref. domains'), 'ref_domains', 'RD')
                 ->sortable(),
-            Column::make(__('Keywords TOP 10'), 'num_organic_keywords_top_10')
+            Column::make(__('Keywords TOP 10'), 'num_organic_keywords_top_10', 'KW TOP 10')
                 ->sortable(),
 //            Column::make(__('Article provides by'), 'article_by')
 //                ->sortable(),
-            Column::make(__('Price (USD)'), 'price')
+            Column::make(__('Price'), 'price', 'Price ($)')
                 ->sortable(),
-            Column::make(__('Sponsored label'), 'sponsored_label')
+            Column::make(__('Sponsored label'), 'sponsored_label', 'SL')
                 ->sortable(),
 //            Column::make(__('Type of publication'), 'type_of_publication')
 //                ->sortable(),
-            Column::make(__('Link type'), 'type_of_link')
+            Column::make(__('Link type'), 'type_of_link', 'LT')
                 ->sortable(),
-            Column::make(__('Contact email'), 'contact_email')
+            Column::make(__('Contact email'), 'contact_email', 'Email')
                 ->sortable(),
-            Column::make(__('Contact form'), 'contact_form_link')
+            Column::make(__('Contact form'), 'contact_form_link', 'CF')
                 ->sortable(),
-            Column::make(__('Contact name'), 'contact_name')
+            Column::make(__('Contact name'), 'contact_name', 'Name')
                 ->sortable(),
-            Column::make(__('Additional notes'), 'additional_notes')
+            Column::make(__('Additional notes'), 'additional_notes', 'Notes')
                 ->sortable(),
         ];
     }
