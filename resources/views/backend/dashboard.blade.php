@@ -41,22 +41,23 @@
 
     <script>
 
-        $('.column-title:not(.clicked), .column-additional_notes:not(.clicked)').click(function () {
-            if (!$(this).hasClass('clicked')) {
+        $( "html" ).delegate( ".column-title, .column-additional_notes", "click", function () {
+            let element = $(this)
+            if (!element.hasClass('clicked')) {
                 $('.column-title').removeClass("clicked");
                 $('.moreInfo').remove();
-                $(this).toggleClass("clicked");
-                const text = $(this).text();
-                $(this).append('<div class="moreInfo">' + text + ' <span class="closeMoreInfo">X</span></div>')
+                element.toggleClass("clicked");
+                const text = element.text();
+                element.append('<div class="moreInfo">' + text + ' <span class="closeMoreInfo">X</span></div>')
             }
         })
 
-        $( "html" ).delegate( ".closeMoreInfo", "click", () => {
+        $( "html" ).delegate( ".closeMoreInfo", "click", function () {
             $('.column-title').removeClass("clicked");
             $('.moreInfo').remove();
         });
 
-        $('.column-price').dblclick(function () {
+        $( "html" ).delegate( ".column-price", "dblclick", function () {
             if (!$(this).hasClass('editorField')) {
                 $(this).toggleClass("editorField");
                 const text = parseFloat($(this).text());
@@ -64,7 +65,7 @@
             }
         })
 
-        $( "html" ).delegate( "body", "mouseup", (e) => {
+        $( "html" ).delegate( "body", "mouseup", function (e) {
             if ($(".moreInfo") && e.target !== $(".moreInfo")[0]){
                 $('.column-title').removeClass("clicked");
                 $('.moreInfo').remove();
