@@ -84,7 +84,14 @@ class DomainController
             throw new \Exception('Domain not fount', Response::HTTP_NOT_FOUND);
         }
 
-        $domain->price = $request->value;
+        if (isset($request->price)) {
+            $domain->price = $request->price;
+        }
+
+        if (isset($request->additional_notes)) {
+            $domain->additional_notes = $request->additional_notes;
+        }
+
         $domain->save();
 
         return $domain;

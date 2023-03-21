@@ -135,7 +135,7 @@ span.closeMoreInfo {
 	width: 60px;
 }
 .editorField > span {
-	display: none;
+	display: none!important;
 }
 td.column-ahrefs_sync_at {
 	min-width: 140px;

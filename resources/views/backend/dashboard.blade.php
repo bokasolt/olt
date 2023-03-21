@@ -43,14 +43,16 @@
 
         $( "html" ).delegate( ".column-title, .column-additional_notes", "click", function () {
             let element = $(this)
-            if (!element.hasClass('clicked') && element.text().trim() !== '') {
-                $('.column-title').removeClass("clicked");
-                $('.column-additional_notes').removeClass("clicked");
-                $('.moreInfo').remove();
-                element.toggleClass("clicked");
-                const text = element.text();
-                element.append('<div class="moreInfo">' + text + ' <span class="closeMoreInfo">X</span></div>')
-            }
+            setTimeout(function () {
+                if (!element.hasClass('editorField') && !element.hasClass('clicked') && element.text().trim() !== '') {
+                    $('.column-title').removeClass("clicked");
+                    $('.column-additional_notes').removeClass("clicked");
+                    $('.moreInfo').remove();
+                    element.toggleClass("clicked");
+                    const text = element.text();
+                    element.append('<div class="moreInfo">' + text + ' <span class="closeMoreInfo">X</span></div>')
+                }
+            }, 200)
         })
 
         $( "html" ).delegate( ".closeMoreInfo", "click", function () {
@@ -69,25 +71,40 @@
             }
         })
 
+        $( "html" ).delegate( ".column-additional_notes", "dblclick", function () {
+            if (!$(this).hasClass('editorField')) {
+                $(this).toggleClass("editorField");
+                $(this).toggleClass("clicked");
+                const text = $(this).text().trim();
+                $(this).append('<div class="editor"><textarea type="text" name="additional_notes" style="border:1px solid #d8dbe0">'+text+'</textarea> ' +
+                    '<button onclick="save($(this))" class="btn btn-sm btn-primary">save</button>' +
+                    '<button onclick="closeEditor($(this))" class="card-header-action" style="border: none;">close</button></div>')
+            }
+        })
+
         $( "html" ).delegate( "body", "mouseup", function (e) {
             if ($(".moreInfo") && e.target !== $(".moreInfo")[0]){
                 $('.column-title').removeClass("clicked");
+                $('.column-additional_notes').removeClass("clicked");
                 $('.moreInfo').remove();
             }
         });
         document.addEventListener('scroll', function (event) {
             $('.column-title').removeClass("clicked");
+            $('.column-additional_notes').removeClass("clicked");
             $('.moreInfo').remove();
         }, true /*Capture event*/);
 
         function closeEditor(element) {
             element.parent().parent().removeClass('editorField')
             element.parent().remove()
+            $('.column-title').removeClass("clicked");
+            $('.column-additional_notes').removeClass("clicked");
         }
         function save(element) {
             const domain = element.parent().parent().parent().find('.column-domain h5 a').text()
-            const value = element.siblings('input').val()
-            console.log(element.siblings('input'))
+            const price = element.siblings('input[name="price"]').val()
+            const additional_notes = element.siblings('textarea[name="additional_notes"]').val()
 
             const _token = $('meta[name="csrf-token"]').attr('content')
 
@@ -96,7 +113,8 @@
                 type: 'patch',
                 data: {
                     domain: domain,
-                    value: value,
+                    price: price,
+                    additional_notes: additional_notes,
                     _token: _token
                 },
                 dataType: 'json',
@@ -107,8 +125,12 @@
                     $('#tableGoogleSheet').css('opacity', 1);
                 },
                 success: function (json) {
-                    if (json['price']) {
+                    if (json['price'] && price) {
                         element.parent().parent().find('span').text(json['price'])
+                        closeEditor(element)
+                    }
+                    if (json['additional_notes'] && additional_notes) {
+                        element.parent().parent().find('span').text(json['additional_notes'])
                         closeEditor(element)
                     }
                 },
