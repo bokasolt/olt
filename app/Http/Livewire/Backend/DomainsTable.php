@@ -151,7 +151,6 @@ class DomainsTable extends DataTableComponent
             }
         }
 
-
         return $query->withCount('users');
     }
 

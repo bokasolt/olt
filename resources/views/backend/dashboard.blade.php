@@ -72,7 +72,7 @@
         })
 
         $( "html" ).delegate( ".column-additional_notes", "dblclick", function () {
-            if (!$(this).hasClass('editorField')) {
+            if (!$(this).hasClass('editorField') && !$(this).hasClass('clicked')) {
                 $(this).toggleClass("editorField");
                 $(this).toggleClass("clicked");
                 const text = $(this).text().trim();

@@ -19,7 +19,7 @@
         <th
                 {{ $attributes->only('class') }}
                 style="cursor: pointer;"
-                title="{{ $text ?? $column }}"
+                data-toggle="tooltip" data-placement="top" title="{{ $text ?? $column }}"
         >
             <div class="d-flex align-items-center position-relative">
                 <span wire:click="sortBy('{{ $column }}', '{{ $text ?? $column }}')">{{ $short ?? $text }}</span>
