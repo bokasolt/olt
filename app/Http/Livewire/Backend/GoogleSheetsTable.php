@@ -19,7 +19,8 @@ class GoogleSheetsTable extends DataTableComponent
      */
     public function query(): Builder
     {
-        return GoogleSheet::when($this->getFilter('search'), fn ($query, $term) => $query->search($term));
+        return GoogleSheet::when($this->getFilter('search'),
+            fn ($query, $term) => $query->where('name', 'like', '%' . $term . '%')->orWhere('url', 'like', '%' . $term . '%'));
     }
 
     public function columns(): array

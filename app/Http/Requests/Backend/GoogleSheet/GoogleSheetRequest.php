@@ -28,7 +28,7 @@ class GoogleSheetRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'url' => ['required', 'string'],
+            'url' => ['required', 'string', 'unique:google_sheets'],
             'associations' => ['required', 'array'],
             'associations.domain' => ['required', 'string', 'not_in:-- not use --'],
             'import' => ['sometimes']

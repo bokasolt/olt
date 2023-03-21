@@ -43,8 +43,9 @@
 
         $( "html" ).delegate( ".column-title, .column-additional_notes", "click", function () {
             let element = $(this)
-            if (!element.hasClass('clicked')) {
+            if (!element.hasClass('clicked') && element.text().trim() !== '') {
                 $('.column-title').removeClass("clicked");
+                $('.column-additional_notes').removeClass("clicked");
                 $('.moreInfo').remove();
                 element.toggleClass("clicked");
                 const text = element.text();
@@ -54,6 +55,7 @@
 
         $( "html" ).delegate( ".closeMoreInfo", "click", function () {
             $('.column-title').removeClass("clicked");
+            $('.column-additional_notes').removeClass("clicked");
             $('.moreInfo').remove();
         });
 

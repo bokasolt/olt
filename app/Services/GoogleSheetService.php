@@ -107,8 +107,8 @@ class GoogleSheetService
         try {
             foreach ($entities as $entity) {
                 if (isset($request->overwrite)
-                    && isset($request->overwrite[$entity['domain']])) {
-                    if ($request->overwrite[$entity['domain']] === '1') {
+                    && isset($request->overwrite[trim($entity['domain'])])) {
+                    if ($request->overwrite[trim($entity['domain'])] === '1') {
                         Domain::updateOrCreate([
                             'domain' => $entity['domain']
                         ], $entity);
