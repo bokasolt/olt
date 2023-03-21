@@ -42,6 +42,7 @@
     <script>
 
         $( "html" ).delegate( ".column-title, .column-additional_notes", "click", function () {
+            console.log('here')
             let element = $(this)
             setTimeout(function () {
                 if (!element.hasClass('editorField') && !element.hasClass('clicked') && element.text().trim() !== '') {
@@ -89,6 +90,7 @@
                 $('.moreInfo').remove();
             }
         });
+
         document.addEventListener('scroll', function (event) {
             $('.column-title').removeClass("clicked");
             $('.column-additional_notes').removeClass("clicked");
@@ -101,6 +103,7 @@
             $('.column-title').removeClass("clicked");
             $('.column-additional_notes').removeClass("clicked");
         }
+
         function save(element) {
             const domain = element.parent().parent().parent().find('.column-domain h5 a').text()
             const price = element.siblings('input[name="price"]').val()
