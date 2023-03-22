@@ -149,3 +149,6 @@ i.fas.fa-filter {
 td.column-lang {
 	text-align: center;
 }
+th:nth-child(3) .d-flex.align-items-center.position-relative {
+	padding-left: 10px;
+}
