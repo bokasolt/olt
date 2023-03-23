@@ -39,10 +39,16 @@
 
             const url = $('#url').val()
 
+            @if(isset($googleSheet))
+                const id = '{{ $googleSheet->id }}'
+            @else
+                const id = null
+            @endif
+
             $.ajax({
                 url: '{{ route('admin.google-sheet.load') }}',
                 type: 'post',
-                data: {url, _token},
+                data: {url, _token, id},
                 dataType: 'json',
                 beforeSend: function() {
                     $('#tableGoogleSheet').css('opacity', 0.5);
@@ -65,7 +71,9 @@
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    if (xhr.responseJSON.message) {
+                    if (xhr.responseJSON.message && xhr.responseJSON.errors && xhr.responseJSON.errors.url) {
+                        alert(xhr.responseJSON.errors.url[0]);
+                    } else if (xhr.responseJSON.message) {
                         alert(thrownError + '\n\r' + xhr.responseJSON.message);
                     } else {
                         alert(xhr.responseText);

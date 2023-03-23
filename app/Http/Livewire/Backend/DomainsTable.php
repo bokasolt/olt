@@ -95,19 +95,7 @@ class DomainsTable extends DataTableComponent
     {
         $query = $this->baseQuery()
             ->when($this->getFilter('niche'), fn($query, $filter) => $query->whereIn('niche', $filter))
-            ->when($this->getFilter('lang'), function($query, $filter) {
-                if (in_array('ru', $filter)
-                    || in_array('ua', $filter)
-                    || in_array('RU', $filter)
-                    || in_array('UA', $filter)) {
-                    $query->where('lang', 'like', '%ru%');
-                    $query->orWhere('lang', 'like', '%ua%');
-                    $query->orWhere('lang', 'like', '%RU%');
-                    $query->orWhere('lang', 'like', '%UA%');
-                } else {
-                    $query->whereIn('lang', $filter);
-                }
-            })
+            ->when($this->getFilter('lang'), fn($query, $filter) => $query->whereIn('lang', $filter))
             ->when($this->getFilter('article_by'), function ($query, $filter) {
                 foreach ($filter as $k) {
                     $query->where('article_by', 'like', '%' . $k . '%');
@@ -151,6 +139,7 @@ class DomainsTable extends DataTableComponent
             }
         }
 
+
         return $query->withCount('users');
     }
 
@@ -183,9 +172,9 @@ class DomainsTable extends DataTableComponent
             $failed_columns,
             $this->commonColumns(true),
             [
-                Column::make(__('Sync at'), 'ahrefs_sync_at', 'Sync')
+                Column::make(__('Sync at'), 'ahrefs_sync_at')
                     ->sortable(),
-                Column::make(__('Action'), 'domain', 'Action')
+                Column::make(__('Actions'), 'domain')
                     ->format(function (Domain $row) {
                         return view('backend.domain.includes.actions', ['domain' => $row]);
                     })
@@ -269,14 +258,11 @@ class DomainsTable extends DataTableComponent
                     ->where('niche', '!=', '')
                     ->groupBy('niche')
                     ->pluck('niche', 'niche')->toArray()),
-
             'lang' => FilterCheckbox::make(__('Language'))
                 ->setOptions(Domain::whereNotNull('lang')
                     ->where('lang', '!=', '')
                     ->groupBy('lang')
-                    ->pluck('lang', 'lang')
-                    ->unique()->toArray()),
-
+                    ->pluck('lang', 'lang')->toArray()),
             'article_by' => FilterCheckbox::make(__('Article provides by'))
                 ->setOptions($this->buildOptionsFor('article_by')),
             'sponsored_label' => FilterCheckbox::make(__('Sponsored label'))

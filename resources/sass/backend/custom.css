@@ -152,3 +152,7 @@ td.column-lang {
 th:nth-child(3) .d-flex.align-items-center.position-relative {
 	padding-left: 10px;
 }
+tr:last-child td .moreInfo {
+	bottom: 0;
+	top: unset;
+}

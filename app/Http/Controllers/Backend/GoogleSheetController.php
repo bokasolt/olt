@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Requests\Backend\GoogleSheet\GoogleSheetRequest;
 use App\Http\Requests\Backend\GoogleSheet\ImportRequest;
+use App\Http\Requests\Backend\GoogleSheet\LoadHeaderRequest;
 use App\Models\Domain;
 use App\Models\GoogleSheet;
 use App\Services\GoogleSheetEntityService;
@@ -68,7 +69,7 @@ class GoogleSheetController
             ->withFlashSuccess(__('The google sheet was successfully deleted.'));
     }
 
-    public function loadHeaderGoogleSheet(Request $request, GoogleSheetService $googleSheetService)
+    public function loadHeaderGoogleSheet(LoadHeaderRequest $request, GoogleSheetService $googleSheetService)
     {
         return response()->json([
             'data' => $googleSheetService->load($request->url)->getHeader()
