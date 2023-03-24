@@ -34,7 +34,7 @@
 
                                                 @if ($code['used_at'])
                                                     <strong class="text-danger">
-                                                        @lang('Used'): @displayDate(carbon($code['used_at']))
+                                                        @lang('Used'): {{ carbon($code['used_at']) }}
                                                     </strong>
                                                 @else
                                                     <em>@lang('Not Used')</em>
